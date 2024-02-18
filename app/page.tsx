@@ -1,24 +1,15 @@
-import { CarCard, CustomFilter, Hero, SearchBar, ShowMore } from "@/components";
+import { CustomFilter, Hero, SearchBar } from "@/components";
+import { AllCars } from "@/components/AllCars";
+import { Loader } from "@/components/Loader";
 import { fuels, yearsOfProduction } from "@/constants";
 import { FilterProps } from "@/types";
-import { fetchCars } from "@/utils";
+import { Suspense } from "react";
 
 export default async function Home({
   searchParams,
 }: {
   searchParams: FilterProps;
 }) {
-  const allCars = await fetchCars({
-    model: searchParams.model || "",
-    make: searchParams.make || "",
-    year: searchParams.year || 2022,
-    fuel: searchParams.fuel || "",
-    limit: searchParams.limit || 10,
-  });
-  console.log(allCars);
-
-  const isDataEmpty = !Array.isArray(allCars) || allCars.length < 1 || !allCars;
-
   return (
     <main className="overflow-hidden">
       <Hero />
@@ -34,24 +25,9 @@ export default async function Home({
             <CustomFilter title="year" options={yearsOfProduction} />
           </div>
         </div>
-        {!isDataEmpty ? (
-          <section>
-            <div className="home__cars-wrapper">
-              {allCars?.map((car) => (
-                <CarCard car={car} />
-              ))}
-            </div>
-            <ShowMore
-              pageNumber={(searchParams.limit || 10) / 10}
-              isNext={(searchParams.limit || 10) > allCars.length}
-            />
-          </section>
-        ) : (
-          <div className="home__error-container">
-            <h2 className="text-black text-xl font-bold">Oops, no results</h2>
-            <p>{allCars?.message}</p>
-          </div>
-        )}
+        <Suspense fallback={<Loader />}>
+          <AllCars {...searchParams} />
+        </Suspense>
       </div>
     </main>
   );
