@@ -21,7 +21,16 @@ export default function Home({ searchParams }: { searchParams: FilterProps }) {
             <CustomFilter title="year" options={yearsOfProduction} />
           </div>
         </div>
-        <Suspense fallback={<Loader />}>
+        <Suspense
+          key={
+            searchParams.fuel +
+            searchParams.limit +
+            searchParams.make +
+            searchParams.make +
+            searchParams.year
+          }
+          fallback={<Loader />}
+        >
           <AllCars {...searchParams} />
         </Suspense>
       </div>
