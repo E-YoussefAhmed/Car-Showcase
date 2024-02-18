@@ -5,11 +5,7 @@ import { fuels, yearsOfProduction } from "@/constants";
 import { FilterProps } from "@/types";
 import { Suspense } from "react";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: FilterProps;
-}) {
+export default function Home({ searchParams }: { searchParams: FilterProps }) {
   return (
     <main className="overflow-hidden">
       <Hero />
