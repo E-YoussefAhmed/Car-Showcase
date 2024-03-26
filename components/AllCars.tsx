@@ -26,7 +26,7 @@ export const AllCars = async ({
         <section>
           <div className="home__cars-wrapper">
             {allCars?.map((car) => (
-              <CarCard car={car} />
+              <CarCard key={car.make + car.model} car={car} />
             ))}
           </div>
           <ShowMore
